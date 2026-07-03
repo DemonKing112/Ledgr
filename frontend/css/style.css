@@ -258,8 +258,11 @@ h3 { font-size: 1.25rem; }
   border-bottom: 1px solid var(--border-light);
 }
 .mobile-menu .btn {
-  width: 100%;
-  margin-top: 16px;
+  display: inline-block;
+  width: auto;
+  margin-top: 20px;
+  padding: 10px 28px;
+  font-size: 0.9375rem;
 }
 
 /* Overlay behind mobile menu */
