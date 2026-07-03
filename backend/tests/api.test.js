@@ -1,40 +1,39 @@
-/* ──────────────────────────────────────────────────────────────
-   API TESTS
-   Covers signup, login, and expense CRUD.
-   Each test run uses a fresh DB file that's cleaned up afterward.
-   ────────────────────────────────────────────────────────────── */
-
 const request = require('supertest');
-const path = require('path');
-const fs = require('fs');
 
-/* Point the DB to a temporary test file */
-const TEST_DB = path.join(__dirname, '..', 'test.db');
-process.env.DB_PATH = TEST_DB;
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_QMiW2pJ4ugZN@ep-restless-brook-ao22e0id.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
 process.env.JWT_SECRET = 'test-secret-not-for-production';
 process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-not-for-production';
 process.env.FRONTEND_URL = 'http://localhost:5500';
 
-/* Remove stale test DB before loading the app */
-try { fs.unlinkSync(TEST_DB); } catch {}
-
 const app = require('../server');
+const db = require('../db/schema');
 
 let accessToken;
 let refreshToken;
 let expenseId;
 
-/* Wait for the async database initialization to finish */
 beforeAll(async () => {
   await app.dbReady;
-});
+  await db.query("DELETE FROM expenses WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM budgets WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM categories WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM projects WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM refresh_tokens WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM password_reset_tokens WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM users WHERE email = 'test@example.com'");
+}, 30000);
 
-/* Clean up the test database after all tests finish */
-afterAll(() => {
-  try { fs.unlinkSync(TEST_DB); } catch {}
-});
+afterAll(async () => {
+  await db.query("DELETE FROM expenses WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM budgets WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM categories WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM projects WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM refresh_tokens WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM password_reset_tokens WHERE user_id IN (SELECT id FROM users WHERE email = 'test@example.com')");
+  await db.query("DELETE FROM users WHERE email = 'test@example.com'");
+  await db.end();
+}, 30000);
 
-/* ── AUTH TESTS ───────────────────────────────────────────── */
 describe('Auth', () => {
   test('POST /api/auth/signup — creates a new user', async () => {
     const res = await request(app)
@@ -111,7 +110,6 @@ describe('Auth', () => {
   });
 });
 
-/* ── EXPENSE TESTS ────────────────────────────────────────── */
 describe('Expenses', () => {
   test('POST /api/expenses — creates an expense', async () => {
     const res = await request(app)
@@ -124,7 +122,7 @@ describe('Expenses', () => {
       });
 
     expect(res.status).toBe(201);
-    expect(res.body.expense.amount).toBe(49.99);
+    expect(parseFloat(res.body.expense.amount)).toBe(49.99);
     expenseId = res.body.expense.id;
   });
 
@@ -158,7 +156,7 @@ describe('Expenses', () => {
       });
 
     expect(res.status).toBe(200);
-    expect(res.body.expense.amount).toBe(75);
+    expect(parseFloat(res.body.expense.amount)).toBe(75);
   });
 
   test('DELETE /api/expenses/:id — deletes an expense', async () => {
@@ -183,7 +181,6 @@ describe('Expenses', () => {
   });
 });
 
-/* ── HEALTH CHECK ─────────────────────────────────────────── */
 describe('Health', () => {
   test('GET /api/health — returns ok', async () => {
     const res = await request(app).get('/api/health');

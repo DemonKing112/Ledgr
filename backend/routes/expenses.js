@@ -1,154 +1,122 @@
-/* ──────────────────────────────────────────────────────────────
-   EXPENSE ROUTES
-   Full CRUD for expenses.  Every query is scoped to the
-   logged-in user so nobody can see anyone else's data.
-   ────────────────────────────────────────────────────────────── */
-
 const express = require('express');
 const router = express.Router();
 const db = require('../db/schema');
 const authenticate = require('../middleware/auth');
 const { expenseRules, idParam } = require('../middleware/validate');
 
-/* All expense routes require a valid access token */
 router.use(authenticate);
 
-/* ── GET /api/expenses ───────────────────────────────────────
-   Returns all expenses for the logged-in user, newest first.
-   Includes the category name and project name via JOINs.       */
-router.get('/', (req, res) => {
-  const expenses = db.prepare(`
-    SELECT
-      e.id,
-      e.amount,
-      e.description,
-      e.date,
-      e.receipt_url,
-      e.category_id,
-      c.name  AS category_name,
-      c.color AS category_color,
-      e.project_id,
-      p.name  AS project_name,
-      e.created_at
-    FROM expenses e
-    LEFT JOIN categories c ON c.id = e.category_id
-    LEFT JOIN projects   p ON p.id = e.project_id
-    WHERE e.user_id = ?
-    ORDER BY e.date DESC, e.created_at DESC
-  `).all(req.userId);
-
-  res.json({ expenses });
+router.get('/', async (req, res) => {
+  try {
+    const { rows } = await db.query(`
+      SELECT
+        e.id, e.amount, e.description, e.date, e.receipt_url,
+        e.category_id, c.name AS category_name, c.color AS category_color,
+        e.project_id, p.name AS project_name, e.created_at
+      FROM expenses e
+      LEFT JOIN categories c ON c.id = e.category_id
+      LEFT JOIN projects   p ON p.id = e.project_id
+      WHERE e.user_id = $1
+      ORDER BY e.date DESC, e.created_at DESC
+    `, [req.userId]);
+    res.json({ expenses: rows });
+  } catch (err) {
+    console.error('List expenses error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
-/* ── GET /api/expenses/summary ───────────────────────────────
-   Returns spend totals grouped by category — used for the
-   dashboard chart.                                              */
-router.get('/summary', (req, res) => {
-  const summary = db.prepare(`
-    SELECT
-      c.name  AS category,
-      c.color AS color,
-      SUM(e.amount) AS total
-    FROM expenses e
-    LEFT JOIN categories c ON c.id = e.category_id
-    WHERE e.user_id = ?
-    GROUP BY e.category_id
-    ORDER BY total DESC
-  `).all(req.userId);
+router.get('/summary', async (req, res) => {
+  try {
+    const { rows } = await db.query(`
+      SELECT
+        c.name AS category, c.color AS color, SUM(e.amount) AS total
+      FROM expenses e
+      LEFT JOIN categories c ON c.id = e.category_id
+      WHERE e.user_id = $1
+      GROUP BY e.category_id, c.name, c.color
+      ORDER BY total DESC
+    `, [req.userId]);
 
-  const grandTotal = summary.reduce((sum, row) => sum + row.total, 0);
-
-  res.json({ summary, grandTotal });
+    const grandTotal = rows.reduce((sum, row) => sum + parseFloat(row.total), 0);
+    res.json({ summary: rows, grandTotal });
+  } catch (err) {
+    console.error('Expense summary error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
-/* ── POST /api/expenses ──────────────────────────────────────
-   Creates a new expense for the logged-in user.                */
-router.post('/', expenseRules, (req, res) => {
+router.post('/', expenseRules, async (req, res) => {
   try {
     const { amount, description, date, category_id, project_id } = req.body;
 
-    const result = db.prepare(`
-      INSERT INTO expenses
-      (user_id, amount, description, date, category_id, project_id)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).run(
-      req.userId,
-      amount,
-      description,
-      date,
-      category_id || null,
-      project_id || null
-    );
+    const { rows: inserted } = await db.query(`
+      INSERT INTO expenses (user_id, amount, description, date, category_id, project_id)
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+    `, [req.userId, amount, description, date, category_id || null, project_id || null]);
 
-    const expense = db.prepare(`
-      SELECT
-        e.*,
-        c.name AS category_name,
-        c.color AS category_color,
-        p.name AS project_name
+    const { rows } = await db.query(`
+      SELECT e.*, c.name AS category_name, c.color AS category_color, p.name AS project_name
       FROM expenses e
       LEFT JOIN categories c ON c.id = e.category_id
       LEFT JOIN projects p ON p.id = e.project_id
-      WHERE e.id = ?
-    `).get(result.lastInsertRowid);
+      WHERE e.id = $1
+    `, [inserted[0].id]);
 
-    res.status(201).json({ expense });
-
+    res.status(201).json({ expense: rows[0] });
   } catch (err) {
-    console.error("INSERT FAILED:", err);
-    res.status(500).json({
-      error: err.message,
-      stack: err.stack
-    });
+    console.error('Create expense error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* ── PUT /api/expenses/:id ───────────────────────────────────
-   Updates an existing expense.  Only the owner can edit it.    */
-router.put('/:id', idParam, expenseRules, (req, res) => {
-  const { id } = req.params;
-  const { amount, description, date, category_id, project_id } = req.body;
+router.put('/:id', idParam, expenseRules, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, description, date, category_id, project_id } = req.body;
 
-  /* Make sure this expense belongs to the current user */
-  const existing = db.prepare('SELECT id FROM expenses WHERE id = ? AND user_id = ?')
-    .get(id, req.userId);
+    const { rows: existing } = await db.query(
+      'SELECT id FROM expenses WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (existing.length === 0) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
 
-  if (!existing) {
-    return res.status(404).json({ error: 'Expense not found' });
+    await db.query(`
+      UPDATE expenses
+      SET amount = $1, description = $2, date = $3, category_id = $4, project_id = $5, updated_at = NOW()
+      WHERE id = $6 AND user_id = $7
+    `, [amount, description, date, category_id || null, project_id || null, id, req.userId]);
+
+    const { rows } = await db.query(`
+      SELECT e.*, c.name AS category_name, c.color AS category_color, p.name AS project_name
+      FROM expenses e
+      LEFT JOIN categories c ON c.id = e.category_id
+      LEFT JOIN projects   p ON p.id = e.project_id
+      WHERE e.id = $1
+    `, [id]);
+
+    res.json({ expense: rows[0] });
+  } catch (err) {
+    console.error('Update expense error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  db.prepare(`
-    UPDATE expenses
-    SET amount = ?, description = ?, date = ?, category_id = ?, project_id = ?,
-        updated_at = datetime('now')
-    WHERE id = ? AND user_id = ?
-  `).run(amount, description, date, category_id || null, project_id || null, id, req.userId);
-
-  const expense = db.prepare(`
-    SELECT
-      e.*, c.name AS category_name, c.color AS category_color, p.name AS project_name
-    FROM expenses e
-    LEFT JOIN categories c ON c.id = e.category_id
-    LEFT JOIN projects   p ON p.id = e.project_id
-    WHERE e.id = ?
-  `).get(id);
-
-  res.json({ expense });
 });
 
-/* ── DELETE /api/expenses/:id ────────────────────────────────
-   Permanently removes an expense.  Only the owner can do this. */
-router.delete('/:id', idParam, (req, res) => {
-  const { id } = req.params;
-
-  const result = db.prepare('DELETE FROM expenses WHERE id = ? AND user_id = ?')
-    .run(id, req.userId);
-
-  if (result.changes === 0) {
-    return res.status(404).json({ error: 'Expense not found' });
+router.delete('/:id', idParam, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(
+      'DELETE FROM expenses WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
+    res.json({ message: 'Expense deleted' });
+  } catch (err) {
+    console.error('Delete expense error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  res.json({ message: 'Expense deleted' });
 });
 
 module.exports = router;

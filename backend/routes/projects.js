@@ -1,8 +1,3 @@
-/* ──────────────────────────────────────────────────────────────
-   PROJECT ROUTES
-   Lets users manage client projects for grouping expenses.
-   ────────────────────────────────────────────────────────────── */
-
 const express = require('express');
 const router = express.Router();
 const db = require('../db/schema');
@@ -11,65 +6,71 @@ const { projectRules, idParam } = require('../middleware/validate');
 
 router.use(authenticate);
 
-/* ── GET /api/projects ───────────────────────────────────────
-   Returns all projects belonging to the logged-in user.        */
-router.get('/', (req, res) => {
-  const projects = db.prepare(
-    'SELECT * FROM projects WHERE user_id = ? ORDER BY created_at DESC'
-  ).all(req.userId);
-
-  res.json({ projects });
-});
-
-/* ── POST /api/projects ──────────────────────────────────────
-   Creates a new project.                                       */
-router.post('/', projectRules, (req, res) => {
-  const { name, client_name } = req.body;
-
-  const result = db.prepare(`
-    INSERT INTO projects (user_id, name, client_name) VALUES (?, ?, ?)
-  `).run(req.userId, name, client_name || null);
-
-  const project = db.prepare('SELECT * FROM projects WHERE id = ?')
-    .get(result.lastInsertRowid);
-
-  res.status(201).json({ project });
-});
-
-/* ── PUT /api/projects/:id ───────────────────────────────────
-   Updates an existing project. Only the owner can edit it.    */
-router.put('/:id', idParam, projectRules, (req, res) => {
-  const { id } = req.params;
-  const { name, client_name } = req.body;
-
-  const existing = db.prepare('SELECT id FROM projects WHERE id = ? AND user_id = ?')
-    .get(id, req.userId);
-  if (!existing) {
-    return res.status(404).json({ error: 'Project not found' });
+router.get('/', async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      'SELECT * FROM projects WHERE user_id = $1 ORDER BY created_at DESC', [req.userId]
+    );
+    res.json({ projects: rows });
+  } catch (err) {
+    console.error('List projects error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  db.prepare(`
-    UPDATE projects SET name = ?, client_name = ? WHERE id = ? AND user_id = ?
-  `).run(name, client_name || null, id, req.userId);
-
-  const project = db.prepare('SELECT * FROM projects WHERE id = ?').get(id);
-  res.json({ project });
 });
 
-/* ── DELETE /api/projects/:id ────────────────────────────────
-   Deletes a project. Expenses that used it keep their record
-   but their project_id is cleared (ON DELETE SET NULL).       */
-router.delete('/:id', idParam, (req, res) => {
-  const { id } = req.params;
-
-  const result = db.prepare('DELETE FROM projects WHERE id = ? AND user_id = ?')
-    .run(id, req.userId);
-
-  if (result.changes === 0) {
-    return res.status(404).json({ error: 'Project not found' });
+router.post('/', projectRules, async (req, res) => {
+  try {
+    const { name, client_name } = req.body;
+    const { rows } = await db.query(
+      'INSERT INTO projects (user_id, name, client_name) VALUES ($1, $2, $3) RETURNING *',
+      [req.userId, name, client_name || null]
+    );
+    res.status(201).json({ project: rows[0] });
+  } catch (err) {
+    console.error('Create project error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
+});
 
-  res.json({ message: 'Project deleted' });
+router.put('/:id', idParam, projectRules, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, client_name } = req.body;
+
+    const { rows: existing } = await db.query(
+      'SELECT id FROM projects WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (existing.length === 0) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    await db.query(
+      'UPDATE projects SET name = $1, client_name = $2 WHERE id = $3 AND user_id = $4',
+      [name, client_name || null, id, req.userId]
+    );
+
+    const { rows } = await db.query('SELECT * FROM projects WHERE id = $1', [id]);
+    res.json({ project: rows[0] });
+  } catch (err) {
+    console.error('Update project error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+router.delete('/:id', idParam, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(
+      'DELETE FROM projects WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+    res.json({ message: 'Project deleted' });
+  } catch (err) {
+    console.error('Delete project error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
 module.exports = router;

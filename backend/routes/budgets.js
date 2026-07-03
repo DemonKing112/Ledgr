@@ -1,9 +1,3 @@
-/* ──────────────────────────────────────────────────────────────
-   BUDGET ROUTES
-   Lets users set an optional monthly spending limit per
-   category, and see how it compares to their actual spend.
-   ────────────────────────────────────────────────────────────── */
-
 const express = require('express');
 const router = express.Router();
 const db = require('../db/schema');
@@ -12,99 +6,106 @@ const { budgetRules, idParam } = require('../middleware/validate');
 
 router.use(authenticate);
 
-/* ── GET /api/budgets ─────────────────────────────────────────
-   Returns all budgets for the logged-in user, joined with the
-   category name/color for display.                             */
-router.get('/', (req, res) => {
-  const budgets = db.prepare(`
-    SELECT
-      b.id,
-      b.category_id,
-      c.name  AS category_name,
-      c.color AS category_color,
-      b.monthly_limit
-    FROM budgets b
-    JOIN categories c ON c.id = b.category_id
-    WHERE b.user_id = ?
-    ORDER BY c.name
-  `).all(req.userId);
-
-  res.json({ budgets });
+router.get('/', async (req, res) => {
+  try {
+    const { rows } = await db.query(`
+      SELECT b.id, b.category_id, c.name AS category_name, c.color AS category_color, b.monthly_limit
+      FROM budgets b
+      JOIN categories c ON c.id = b.category_id
+      WHERE b.user_id = $1
+      ORDER BY c.name
+    `, [req.userId]);
+    res.json({ budgets: rows });
+  } catch (err) {
+    console.error('List budgets error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
-/* ── POST /api/budgets ────────────────────────────────────────
-   Creates a budget for a category. One budget per category —
-   trying to create a second one for the same category fails.   */
-router.post('/', budgetRules, (req, res) => {
-  const { category_id, monthly_limit } = req.body;
+router.post('/', budgetRules, async (req, res) => {
+  try {
+    const { category_id, monthly_limit } = req.body;
 
-  const category = db.prepare('SELECT id FROM categories WHERE id = ? AND user_id = ?')
-    .get(category_id, req.userId);
-  if (!category) {
-    return res.status(404).json({ error: 'Category not found' });
+    const { rows: catRows } = await db.query(
+      'SELECT id FROM categories WHERE id = $1 AND user_id = $2', [category_id, req.userId]
+    );
+    if (catRows.length === 0) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    const { rows: existingRows } = await db.query(
+      'SELECT id FROM budgets WHERE user_id = $1 AND category_id = $2', [req.userId, category_id]
+    );
+    if (existingRows.length > 0) {
+      return res.status(409).json({ error: 'A budget already exists for this category' });
+    }
+
+    const { rows: inserted } = await db.query(
+      'INSERT INTO budgets (user_id, category_id, monthly_limit) VALUES ($1, $2, $3) RETURNING id',
+      [req.userId, category_id, monthly_limit]
+    );
+
+    const { rows } = await db.query(`
+      SELECT b.id, b.category_id, c.name AS category_name, c.color AS category_color, b.monthly_limit
+      FROM budgets b JOIN categories c ON c.id = b.category_id
+      WHERE b.id = $1
+    `, [inserted[0].id]);
+
+    res.status(201).json({ budget: rows[0] });
+  } catch (err) {
+    console.error('Create budget error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  const existing = db.prepare('SELECT id FROM budgets WHERE user_id = ? AND category_id = ?')
-    .get(req.userId, category_id);
-  if (existing) {
-    return res.status(409).json({ error: 'A budget already exists for this category' });
-  }
-
-  const result = db.prepare(`
-    INSERT INTO budgets (user_id, category_id, monthly_limit) VALUES (?, ?, ?)
-  `).run(req.userId, category_id, monthly_limit);
-
-  const budget = db.prepare(`
-    SELECT b.id, b.category_id, c.name AS category_name, c.color AS category_color, b.monthly_limit
-    FROM budgets b JOIN categories c ON c.id = b.category_id
-    WHERE b.id = ?
-  `).get(result.lastInsertRowid);
-
-  res.status(201).json({ budget });
 });
 
-/* ── PUT /api/budgets/:id ─────────────────────────────────────
-   Updates a budget's monthly limit.                             */
-router.put('/:id', idParam, (req, res) => {
-  const { id } = req.params;
-  const { monthly_limit } = req.body;
+router.put('/:id', idParam, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { monthly_limit } = req.body;
 
-  if (!monthly_limit || monthly_limit <= 0) {
-    return res.status(400).json({ error: 'Monthly limit must be a positive number' });
+    if (!monthly_limit || monthly_limit <= 0) {
+      return res.status(400).json({ error: 'Monthly limit must be a positive number' });
+    }
+
+    const { rows: existing } = await db.query(
+      'SELECT id FROM budgets WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (existing.length === 0) {
+      return res.status(404).json({ error: 'Budget not found' });
+    }
+
+    await db.query(
+      'UPDATE budgets SET monthly_limit = $1, updated_at = NOW() WHERE id = $2 AND user_id = $3',
+      [monthly_limit, id, req.userId]
+    );
+
+    const { rows } = await db.query(`
+      SELECT b.id, b.category_id, c.name AS category_name, c.color AS category_color, b.monthly_limit
+      FROM budgets b JOIN categories c ON c.id = b.category_id
+      WHERE b.id = $1
+    `, [id]);
+
+    res.json({ budget: rows[0] });
+  } catch (err) {
+    console.error('Update budget error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  const existing = db.prepare('SELECT id FROM budgets WHERE id = ? AND user_id = ?')
-    .get(id, req.userId);
-  if (!existing) {
-    return res.status(404).json({ error: 'Budget not found' });
-  }
-
-  db.prepare(`
-    UPDATE budgets SET monthly_limit = ?, updated_at = datetime('now') WHERE id = ? AND user_id = ?
-  `).run(monthly_limit, id, req.userId);
-
-  const budget = db.prepare(`
-    SELECT b.id, b.category_id, c.name AS category_name, c.color AS category_color, b.monthly_limit
-    FROM budgets b JOIN categories c ON c.id = b.category_id
-    WHERE b.id = ?
-  `).get(id);
-
-  res.json({ budget });
 });
 
-/* ── DELETE /api/budgets/:id ──────────────────────────────────
-   Removes a budget.                                             */
-router.delete('/:id', idParam, (req, res) => {
-  const { id } = req.params;
-
-  const result = db.prepare('DELETE FROM budgets WHERE id = ? AND user_id = ?')
-    .run(id, req.userId);
-
-  if (result.changes === 0) {
-    return res.status(404).json({ error: 'Budget not found' });
+router.delete('/:id', idParam, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(
+      'DELETE FROM budgets WHERE id = $1 AND user_id = $2', [id, req.userId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Budget not found' });
+    }
+    res.json({ message: 'Budget deleted' });
+  } catch (err) {
+    console.error('Delete budget error:', err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
-
-  res.json({ message: 'Budget deleted' });
 });
 
 module.exports = router;

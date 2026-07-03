@@ -1,33 +1,21 @@
-/* ──────────────────────────────────────────────────────────────
-   SEED SCRIPT
-   Populates the database with realistic fake data so you can
-   see how the app looks with real content.
-
-   Run with:  npm run seed
-   ────────────────────────────────────────────────────────────── */
-
 const bcrypt = require('bcrypt');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const db = require('./schema');
 
 async function seed() {
-  /* Initialize the database (sql.js needs async setup) */
   await db.initDb();
 
   console.log('Seeding database...');
 
-  /* Turn off auto-save during bulk inserts for speed */
-  db.batchMode = true;
+  await db.query('DELETE FROM expenses');
+  await db.query('DELETE FROM budgets');
+  await db.query('DELETE FROM projects');
+  await db.query('DELETE FROM categories');
+  await db.query('DELETE FROM refresh_tokens');
+  await db.query('DELETE FROM password_reset_tokens');
+  await db.query('DELETE FROM users');
 
-  /* ── Clear existing data ─────────────────────────────────── */
-  db.exec('DELETE FROM expenses');
-  db.exec('DELETE FROM projects');
-  db.exec('DELETE FROM categories');
-  db.exec('DELETE FROM refresh_tokens');
-  db.exec('DELETE FROM users');
-
-  /* ── Create demo users ───────────────────────────────────── */
   const passwordHash = await bcrypt.hash('password123', 12);
 
   const users = [
@@ -37,19 +25,17 @@ async function seed() {
     { email: 'demo@ledgr.app',     name: 'Demo User' },
   ];
 
-  const insertUser = db.prepare(
-    'INSERT INTO users (email, name, password_hash) VALUES (?, ?, ?)'
-  );
-
   const userIds = [];
   for (const u of users) {
-    const result = insertUser.run(u.email, u.name, passwordHash);
-    userIds.push(result.lastInsertRowid);
+    const { rows } = await db.query(
+      'INSERT INTO users (email, name, password_hash) VALUES ($1, $2, $3) RETURNING id',
+      [u.email, u.name, passwordHash]
+    );
+    userIds.push(rows[0].id);
   }
 
   console.log(`  Created ${users.length} users (all passwords: "password123")`);
 
-  /* ── Categories per user ─────────────────────────────────── */
   const categoryDefs = [
     { name: 'Software',        color: '#8B5CF6', icon: 'monitor' },
     { name: 'Travel',          color: '#F59E0B', icon: 'plane' },
@@ -61,22 +47,20 @@ async function seed() {
     { name: 'Utilities',       color: '#6366F1', icon: 'zap' },
   ];
 
-  const insertCat = db.prepare(
-    'INSERT INTO categories (user_id, name, color, icon) VALUES (?, ?, ?, ?)'
-  );
-
   const categoryMap = {};
   for (const userId of userIds) {
     categoryMap[userId] = [];
     for (const cat of categoryDefs) {
-      const result = insertCat.run(userId, cat.name, cat.color, cat.icon);
-      categoryMap[userId].push({ id: result.lastInsertRowid, ...cat });
+      const { rows } = await db.query(
+        'INSERT INTO categories (user_id, name, color, icon) VALUES ($1, $2, $3, $4) RETURNING id',
+        [userId, cat.name, cat.color, cat.icon]
+      );
+      categoryMap[userId].push({ id: rows[0].id, ...cat });
     }
   }
 
   console.log(`  Created ${categoryDefs.length} categories per user`);
 
-  /* ── Projects per user ───────────────────────────────────── */
   const projectDefs = [
     { name: 'Website Redesign',    client_name: 'Bloom Studios' },
     { name: 'Mobile App MVP',      client_name: 'FreshCart' },
@@ -85,22 +69,20 @@ async function seed() {
     { name: 'E-commerce Migration', client_name: 'Threadline' },
   ];
 
-  const insertProject = db.prepare(
-    'INSERT INTO projects (user_id, name, client_name) VALUES (?, ?, ?)'
-  );
-
   const projectMap = {};
   for (const userId of userIds) {
     projectMap[userId] = [];
     for (const proj of projectDefs) {
-      const result = insertProject.run(userId, proj.name, proj.client_name);
-      projectMap[userId].push(result.lastInsertRowid);
+      const { rows } = await db.query(
+        'INSERT INTO projects (user_id, name, client_name) VALUES ($1, $2, $3) RETURNING id',
+        [userId, proj.name, proj.client_name]
+      );
+      projectMap[userId].push(rows[0].id);
     }
   }
 
   console.log(`  Created ${projectDefs.length} projects per user`);
 
-  /* ── Expenses ────────────────────────────────────────────── */
   const expenseTemplates = [
     { desc: 'Figma Pro subscription',         amount: 15.00,  catIdx: 0 },
     { desc: 'Adobe Creative Cloud',           amount: 54.99,  catIdx: 0 },
@@ -132,11 +114,6 @@ async function seed() {
     { desc: 'Co-working space day pass',       amount: 25.00,  catIdx: 7 },
   ];
 
-  const insertExpense = db.prepare(`
-    INSERT INTO expenses (user_id, amount, description, date, category_id, project_id)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `);
-
   let expenseCount = 0;
 
   for (const userId of userIds) {
@@ -146,11 +123,9 @@ async function seed() {
     for (let i = 0; i < 40; i++) {
       const template = expenseTemplates[i % expenseTemplates.length];
 
-      /* Add slight price variation so it looks realistic */
       const variation = 1 + (((i * 7 + userId * 3) % 20) - 10) / 100;
       const amount = Math.round(template.amount * variation * 100) / 100;
 
-      /* Spread dates across the last 90 days */
       const daysAgo = (i * 2 + (userId % 3)) % 90;
       const date = new Date();
       date.setDate(date.getDate() - daysAgo);
@@ -159,19 +134,20 @@ async function seed() {
       const categoryId = cats[template.catIdx].id;
       const projectId = projs[i % projs.length];
 
-      insertExpense.run(userId, amount, template.desc, dateStr, categoryId, projectId);
+      await db.query(
+        'INSERT INTO expenses (user_id, amount, description, date, category_id, project_id) VALUES ($1, $2, $3, $4, $5, $6)',
+        [userId, amount, template.desc, dateStr, categoryId, projectId]
+      );
       expenseCount++;
     }
   }
-
-  /* Turn auto-save back on and persist everything */
-  db.batchMode = false;
-  db.save();
 
   console.log(`  Created ${expenseCount} expenses`);
   console.log('\nDone! You can log in with:');
   console.log('  Email:    demo@ledgr.app');
   console.log('  Password: password123');
+
+  await db.end();
 }
 
 seed().catch(err => {
