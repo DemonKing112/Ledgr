@@ -1,6 +1,9 @@
 const request = require('supertest');
 
-process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_QMiW2pJ4ugZN@ep-restless-brook-ao22e0id.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
+if (!process.env.DATABASE_URL) {
+  const path = require('path');
+  require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+}
 process.env.JWT_SECRET = 'test-secret-not-for-production';
 process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-not-for-production';
 process.env.FRONTEND_URL = 'http://localhost:5500';
