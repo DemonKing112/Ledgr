@@ -53,6 +53,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   document.addEventListener('click', closeAllDropdowns);
 
+  /* ── Load subscription status ────────────────────────────────── */
+  try {
+    const subRes = await getSubscriptionStatus();
+    const subData = await subRes.json();
+    const planInfo = document.getElementById('plan-info');
+    if (subRes.ok && planInfo) {
+      const plan = subData.plan || 'free';
+      const label = plan.charAt(0).toUpperCase() + plan.slice(1);
+      if (plan === 'free') {
+        planInfo.innerHTML =
+          '<p class="settings-meta">You are on the <strong>Free</strong> plan.</p>' +
+          '<a href="index.html#pricing" class="btn btn-primary" style="margin-top:8px;">Upgrade</a>';
+      } else {
+        planInfo.innerHTML =
+          '<p class="settings-meta">You are on the <strong>' + label + '</strong> plan.</p>' +
+          '<button class="btn btn-primary" id="manage-sub-btn" style="margin-top:8px;">Manage Subscription</button>';
+        document.getElementById('manage-sub-btn').addEventListener('click', async () => {
+          try {
+            const portalRes = await createPortalSession();
+            const portalData = await portalRes.json();
+            if (!portalRes.ok) throw new Error(portalData.error || 'Failed to open portal');
+            window.location.href = portalData.url;
+          } catch (err) {
+            showToast(err.message, 'error');
+          }
+        });
+      }
+    }
+  } catch (err) {
+    const planInfo = document.getElementById('plan-info');
+    if (planInfo) planInfo.innerHTML = '<p class="settings-meta">Could not load plan info.</p>';
+  }
+
   /* ── Load current profile ───────────────────────────────────── */
   try {
     const res = await apiFetch('/auth/me');
