@@ -29,6 +29,9 @@ app.use(cors({
   credentials: true,
 }));
 
+/* ── Stripe webhook (must be before JSON body parsing) ────── */
+app.use('/api/stripe/webhook', require('./routes/stripeWebhook'));
+
 /* ── Body parsing ────────────────────────────────────────────
    Lets us read JSON request bodies (e.g. { email, password }). */
 app.use(express.json({ limit: '1mb' }));
@@ -46,6 +49,7 @@ app.use('/api/categories', require('./routes/categories'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/receipts', require('./routes/receipts'));
 app.use('/api/budgets', require('./routes/budgets'));
+app.use('/api/stripe', require('./routes/stripe'));
 
 /* ── Health check ────────────────────────────────────────────
    A simple endpoint deployment platforms can ping to verify

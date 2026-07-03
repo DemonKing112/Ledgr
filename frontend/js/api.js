@@ -354,3 +354,23 @@ async function scanReceipt(file) {
   if (!res.ok) throw new Error(data.error || 'Failed to process receipt');
   return data;
 }
+
+/* ── Stripe API calls ─────────────────────────────────────────*/
+
+async function createCheckoutSession(plan) {
+  const res = await apiFetch('/stripe/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ plan }),
+  });
+  return res;
+}
+
+async function createPortalSession() {
+  const res = await apiFetch('/stripe/portal', { method: 'POST' });
+  return res;
+}
+
+async function getSubscriptionStatus() {
+  const res = await apiFetch('/stripe/status');
+  return res;
+}
