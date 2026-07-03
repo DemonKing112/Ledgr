@@ -1,0 +1,7 @@
+node_modules/
+.env
+*.db
+*.sqlite
+coverage/
+.DS_Store
+Thumbs.db

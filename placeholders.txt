@@ -1,0 +1,31 @@
+LEDGR — PLACEHOLDER REFERENCE
+===============================
+All marketing copy has been filled in. The items below are the
+remaining image placeholders that still use placehold.co and
+should be swapped for real assets before a public launch.
+
+Format: [ ] File — Section (~line) — What it is
+        Currently: what's there now
+        Replace with: what real content should go there
+
+
+[ ] index.html — Features / Receipt Scanning (~line 198) — Receipt scan screenshot
+    Currently: placehold.co 400x220 "Receipt Scan Preview"
+    Replace with: real screenshot or mockup of the receipt scanning feature, ~400x220px
+    (Feature is genuinely in preview — the backend endpoint is stubbed, see receipts.html)
+
+[ ] index.html — Testimonials (~line 286) — Avatar 1 (Jordan Rivera, freelance designer)
+    Currently: placehold.co 112x112 "JR"
+    Replace with: real headshot photo, ~112x112px, square crop
+
+[ ] index.html — Testimonials (~line 308) — Avatar 2 (Maya Patel, bakery owner)
+    Currently: placehold.co 112x112 "MP"
+    Replace with: real headshot photo, ~112x112px, square crop
+
+
+Everything else (favicon, OG share image, dashboard screenshot,
+expense list screenshot, project budget screenshot, trust-strip
+logos) already uses real local images in frontend/images/.
+
+All marketing copy (hero, features, pricing, testimonials, FAQ,
+final CTA, footer) has real written content — see index.html.

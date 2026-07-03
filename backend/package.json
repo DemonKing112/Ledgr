@@ -1,0 +1,27 @@
+{
+  "name": "ledgr-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Ledgr — expense tracking for freelancers",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "seed": "node db/seed.js",
+    "test": "npx jest --forceExit --detectOpenHandles"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "sql.js": "^1.12.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Ledgr</title>
+  <meta name="description" content="Manage and review your expenses on the Ledgr dashboard.">
+  <link rel="icon" href="images/favicon.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- ════════════════════════════════════════════════════════
+         SIDEBAR
+         ════════════════════════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="sidebar-logo logo">Ledg<span>r</span></a>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"/></svg>
+          Dashboard
+        </a>
+        <a href="expenses.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l1 3h3a1 1 0 011 1v15a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1h3z"/><path d="M9 11h6"/><path d="M9 15h6"/></svg>
+          Expenses
+        </a>
+        <a href="categories.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Categories
+        </a>
+        <a href="projects.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          Projects
+        </a>
+        <a href="budgets.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><circle cx="16" cy="14.5" r="1.5"/></svg>
+          Budgets
+        </a>
+        <a href="reports.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+          Reports
+        </a>
+        <a href="receipts.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
+          Receipts
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09A1.65 1.65 0 0015.4 4.6a1.65 1.65 0 001.82.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.2.44.6.75 1.51.75V10a2 2 0 010 4z"/></svg>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-upsell">
+        <div class="sidebar-upsell-icon" aria-hidden="true">
+          <span class="upsell-emoji">🖨️</span>
+          <span class="upsell-spark">✨</span>
+        </div>
+        <p class="sidebar-upsell-title">Go Premium</p>
+        <p class="sidebar-upsell-desc">Unlock advanced reports, unlimited receipts and more.</p>
+        <a href="index.html#pricing" class="btn btn-primary sidebar-upsell-btn">Upgrade Now</a>
+      </div>
+
+      <button class="sidebar-logout" id="logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log Out
+      </button>
+    </aside>
+
+    <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+    <!-- ════════════════════════════════════════════════════════
+         MAIN COLUMN
+         ════════════════════════════════════════════════════════ -->
+    <div class="main-column">
+
+      <!-- Top bar -->
+      <header class="topbar">
+        <button class="topbar-menu-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        </button>
+
+        <div class="topbar-right">
+          <span class="topbar-greeting">Hello, <strong id="user-name">User</strong></span>
+          <div class="topbar-avatar-wrap dropdown-wrap">
+            <button class="topbar-avatar" id="avatar-btn">
+              <span id="avatar-initial">U</span>
+            </button>
+            <svg class="topbar-chevron" id="avatar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            <div class="dropdown-menu" id="avatar-menu" style="right: 0; left: auto;">
+              <a class="dropdown-item" href="settings.html">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09A1.65 1.65 0 0015.4 4.6a1.65 1.65 0 001.82.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.2.44.6.75 1.51.75V10a2 2 0 010 4z"/></svg>
+                Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item" id="menu-logout-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="dash-main">
+
+        <!-- Page heading + actions -->
+        <div class="page-heading">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="page-subtitle">Welcome back! Here's your financial overview.</p>
+          </div>
+          <div class="page-actions">
+            <div class="dropdown-wrap">
+              <button class="btn-outline" id="date-range-btn">
+                <span id="date-range-label">This Month</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+              </button>
+              <div class="dropdown-menu" id="date-range-menu">
+                <button class="dropdown-item active" data-period="this-month">This Month</button>
+                <button class="dropdown-item" data-period="last-month">Last Month</button>
+                <button class="dropdown-item" data-period="all-time">All Time</button>
+              </div>
+            </div>
+            <button class="btn-outline" id="export-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2H6a2 2 0 00-2 2v2"/><path d="M16 14h.01"/></svg>
+            </div>
+            <p class="stat-label">Total Spent</p>
+            <p class="stat-value" id="stat-total-spent">$0.00</p>
+            <p class="stat-sub" id="stat-total-spent-sub">This Month</p>
+            <div class="stat-delta-row">
+              <span class="stat-chip stat-chip-green" id="stat-total-spent-chip">—</span>
+              <span class="stat-delta-label">vs last month</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
+            </div>
+            <p class="stat-label">Average Daily Spend</p>
+            <p class="stat-value" id="stat-avg-daily">$0.00</p>
+            <p class="stat-sub">This Month</p>
+            <div class="stat-delta-row">
+              <span class="stat-chip stat-chip-amber" id="stat-avg-daily-chip">—</span>
+              <span class="stat-delta-label">vs last month</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+            </div>
+            <p class="stat-label">Largest Expense</p>
+            <p class="stat-value" id="stat-largest-amount">$0.00</p>
+            <p class="stat-sub" id="stat-largest-desc">No expenses yet</p>
+            <div class="stat-delta-row">
+              <span class="stat-chip stat-chip-green" id="stat-largest-date">—</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2H6a2 2 0 00-2 2v2"/><path d="M22 11H2"/></svg>
+            </div>
+            <p class="stat-label">Total Expenses</p>
+            <p class="stat-value" id="stat-total-count">0</p>
+            <p class="stat-sub">This Month</p>
+            <div class="stat-delta-row">
+              <span class="stat-chip stat-chip-purple" id="stat-total-count-chip">—</span>
+              <span class="stat-delta-label">vs last month</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart + Recent expenses -->
+        <div class="dash-columns">
+
+          <div class="panel chart-panel">
+            <div class="panel-header">
+              <h2>Spending by Category</h2>
+              <div class="dropdown-wrap">
+                <button class="btn-outline btn-outline-sm" id="category-filter-btn">
+                  <span id="category-filter-label">All Categories</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-menu" id="category-filter-menu">
+                  <button class="dropdown-item active" data-category="">All Categories</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-body">
+              <div class="donut-wrapper">
+                <canvas id="category-chart"></canvas>
+              </div>
+              <ul class="chart-legend" id="chart-legend"></ul>
+            </div>
+
+            <button class="btn-full-link" id="view-report-btn">
+              View Full Report
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </button>
+          </div>
+
+          <div class="panel expenses-panel">
+            <div class="panel-header">
+              <h2>Recent Expenses</h2>
+              <a href="expenses.html" class="btn-outline btn-outline-sm">View All Expenses</a>
+            </div>
+
+            <div class="recent-table-wrap">
+              <table class="recent-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="recent-tbody">
+                  <tr><td colspan="5" class="empty-state">Loading expenses...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="panel-footer">
+              <span id="recent-showing-label">Showing 0 of 0 expenses</span>
+              <a href="expenses.html" class="panel-footer-link">
+                View All
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insight banner -->
+        <div class="insight-banner">
+          <div class="insight-icon" aria-hidden="true">💡</div>
+          <div class="insight-text">
+            <p class="insight-title" id="insight-title">You're on track!</p>
+            <p class="insight-desc" id="insight-desc">Add a few expenses to see personalized insights here.</p>
+          </div>
+          <button class="btn-outline" id="view-insights-btn">
+            View Insights
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </button>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Full report modal -->
+  <div class="modal-overlay" id="report-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Full Category Report</h2>
+        <button class="modal-close" data-close-modal>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <ul class="modal-list" id="report-modal-list"></ul>
+    </div>
+  </div>
+
+  <!-- Insights modal -->
+  <div class="modal-overlay" id="insights-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Spending Insights</h2>
+        <button class="modal-close" data-close-modal>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="insights-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast notification container -->
+  <div id="toast-container"></div>
+
+  <!-- Chart.js from CDN — used for the category doughnut chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <!-- App scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>

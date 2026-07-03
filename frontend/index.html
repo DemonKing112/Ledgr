@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Page title & SEO -->
+  <title>Ledgr — Smart Expense Tracking for Everyone</title>
+  <meta name="description" content="Ledgr helps individuals, freelancers, and small teams track expenses, manage budgets, and stay on top of their finances — so you always know where your money went.">
+
+  <!-- Favicon (placeholder) -->
+  <!-- SWAP: favicon — replace with real 32x32 .ico or .png -->
+  <link rel="icon" href="images/favicon.png" type="image/png">
+
+  <!-- Open Graph / social previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ledgr — Smart Expense Tracking for Everyone">
+  <meta property="og:description" content="Track expenses, manage budgets, and always know where your money went.">
+  <!-- SWAP: OG image — replace with branded 1200x630 social share card -->
+  <meta property="og:image" content="images/social.png">
+  <meta property="og:url" content="https://ledgr.app">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts (Fraunces for headings, Inter for body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════
+       NAVIGATION
+       Fixed top bar with glass blur on scroll.
+       ════════════════════════════════════════════════════════ -->
+  <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <!-- Brand logo -->
+      <a href="index.html" class="logo" aria-label="Ledgr home">Ledg<span>r</span></a>
+
+      <!-- Desktop links -->
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <!-- Desktop action buttons -->
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-secondary btn-sm nav-login-link">Log In</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up Free</a>
+      </div>
+
+      <!-- Mobile hamburger button -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile slide-out menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="login.html" class="nav-login-link">Log In</a></li>
+      </ul>
+      <a href="signup.html" class="btn btn-primary">Sign Up Free</a>
+    </div>
+    <div class="menu-overlay" id="menu-overlay"></div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════
+       HERO
+       Big headline + dashboard preview screenshot.
+       Floating shapes create a calm ambient motion.
+       ════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <!-- Ambient floating shapes -->
+    <div class="hero-shape hero-shape-1" aria-hidden="true"></div>
+    <div class="hero-shape hero-shape-2" aria-hidden="true"></div>
+    <div class="hero-shape hero-shape-3" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-content reveal">
+        <h1>Your money, <span class="highlight">finally clear.</span></h1>
+        <p>Built for anyone who's tired of losing track of where their money went. Whether you're freelancing, running a small business, or just trying to stay on top of personal spending — Ledgr makes expense tracking feel effortless.</p>
+        <div class="hero-actions">
+          <a href="signup.html" class="btn btn-primary">Start Free — No Card Needed</a>
+          <a href="#features" class="btn btn-secondary">See How It Works</a>
+        </div>
+      </div>
+      <div class="hero-image reveal">
+        <!-- SWAP: dashboard screenshot — replace with real screenshot of the Ledgr dashboard, ~1040x720 -->
+        <img
+          src="images/dashboard.png"
+          alt="Ledgr dashboard showing expense categories and spending chart"
+          width="520"
+          height="360"
+          loading="eager"
+        >
+      </div>
+    </div>
+  </section>
+
+ <!-- ════════════════════════════════════════════════════════
+     TRUST STRIP
+     Premium trust/features section
+     ════════════════════════════════════════════════════════ -->
+
+<section class="trust-strip reveal">
+  <div class="container">
+
+    <p class="trust-title">
+      Everything you need to manage your money — privately and securely.
+    </p>
+
+    <div class="trust-logos">
+
+      <div class="trust-item">
+        <span>🔒</span>
+        <small>Privacy First</small>
+      </div>
+
+      <div class="trust-item">
+        <span>📊</span>
+        <small>Smart Insights</small>
+      </div>
+
+      <div class="trust-item">
+        <span>💳</span>
+        <small>Expense Tracking</small>
+      </div>
+
+      <div class="trust-item">
+        <span>🎯</span>
+        <small>Goal Planning</small>
+      </div>
+
+      <div class="trust-item">
+        <span>⚡</span>
+        <small>Fast & Simple</small>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+  <!-- ════════════════════════════════════════════════════════
+       FEATURES
+       Three core value propositions, each with an illustration.
+       ════════════════════════════════════════════════════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header reveal">
+        <span class="section-label">Features</span>
+        <h2>Everything you need to track every dollar</h2>
+        <p class="section-subtitle">Track expenses, manage budgets, and gain complete clarity over your finances—all in one simple dashboard.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: Smart Tracking -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon feature-icon-purple">
+            <!-- Receipt icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
+          </div>
+          <h3>Smart Expense Tracking</h3>
+          <p>Record every expense in seconds. Organize spending with categories, search instantly, and keep every transaction in one secure place.</p>
+          <!-- SWAP: expense list screenshot — replace with real screenshot of the expense list view, ~400x220 -->
+          <img src="images/expenses.png"  width="400" height="220" loading="lazy">
+        </div>
+
+        <!-- Feature 2: Project Budgets -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon feature-icon-green">
+            <!-- Folder icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+          </div>
+          <h3>Project-Based Budgeting</h3>
+          <p>Create projects, assign expenses, and monitor budgets in real time. Perfect for freelancers, side hustles, and small businesses.</p>
+          <!-- SWAP: project budget screenshot — replace with real screenshot of project budgets view, ~400x220 -->
+          <img src="images/project.png" width="400" height="220" loading="lazy">
+        </div>
+
+        <!-- Feature 3: Receipt Scanning -->
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon feature-icon-amber">
+            <!-- Camera icon -->
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h3>Receipt Scanning</h3>
+          <p>Upload receipts and let Ledgr automatically capture merchant, amount, and date. Spend less time typing and more time growing your business.</p>
+          <!-- SWAP: receipt scan screenshot — replace with real screenshot of the receipt scanning feature, ~400x220 -->
+          <img src="https://placehold.co/400x220/FBF5E8/A87E2D?text=Receipt+Scan+Preview" alt="COMING SOON" width="400" height="220" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       PRICING
+       Three tiers: Free, Pro, Business.
+       ════════════════════════════════════════════════════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="pricing-header reveal">
+        <span class="section-label">Pricing</span>
+        <h2>Simple, transparent pricing</h2>
+        <p class="section-subtitle">No surprises, no long-term contracts — cancel anytime, and there's always a free tier to fall back on.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card reveal reveal-delay-1">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0 <span>/month</span></div>
+          <p class="pricing-desc">For anyone getting started with better spending habits.</p>
+          <ul class="pricing-features">
+            <li>50 expenses per month</li>
+            <li>3 categories</li>
+            <li>Basic spending chart</li>
+            <li>Email support</li>
+          </ul>
+          <a href="signup.html" class="btn btn-secondary">Get Started</a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="pricing-card featured reveal reveal-delay-2">
+          <div class="pricing-badge">Most Popular</div>
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-price">$12 <span>/month</span></div>
+          <p class="pricing-desc">For people who need the full picture of their finances.</p>
+          <ul class="pricing-features">
+            <li>Unlimited expenses</li>
+            <li>Unlimited categories & projects</li>
+            <li>Receipt scanning</li>
+            <li>CSV & PDF export</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="signup.html" class="btn btn-primary">Start Free Trial</a>
+        </div>
+
+        <!-- Business -->
+        <div class="pricing-card reveal reveal-delay-3">
+          <div class="pricing-tier">Business</div>
+          <div class="pricing-price">$29 <span>/month</span></div>
+          <p class="pricing-desc">For small teams and growing businesses.</p>
+          <ul class="pricing-features">
+            <li>Everything in Pro</li>
+            <li>Up to 5 team members</li>
+            <li>API access</li>
+            <li>Accounting integrations</li>
+            <li>Dedicated support</li>
+          </ul>
+          <a href="signup.html" class="btn btn-secondary">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       TESTIMONIALS
+       Two featured quotes for broader social proof.
+       ════════════════════════════════════════════════════════ -->
+  <section class="testimonials reveal" id="testimonials">
+    <div class="container">
+      <div class="testimonials-header">
+        <span class="section-label">Testimonials</span>
+        <h2>People who stopped guessing where their money went</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1: Freelancer -->
+        <div class="testimonial-card reveal reveal-delay-1">
+          <p class="testimonial-quote">
+            "I used to dread tax season. Now I just export my Ledgr data and hand it to my accountant. Four hours saved every single month."
+          </p>
+          <div class="testimonial-footer">
+            <!-- SWAP: avatar 1 — replace with real headshot, ~112x112 -->
+            <img
+              class="testimonial-avatar"
+              src="https://placehold.co/112x112/D6E6D7/3F5D42?text=JR"
+              alt="Portrait of Jordan Rivera, freelance designer"
+              width="48"
+              height="48"
+              loading="lazy"
+            >
+            <div class="testimonial-info">
+              <p class="testimonial-name">Jordan Rivera</p>
+              <p class="testimonial-role">Freelance UI Designer</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2: Small business owner -->
+        <div class="testimonial-card reveal reveal-delay-2">
+          <p class="testimonial-quote">
+            "We run a five-person bakery. Ledgr replaced three spreadsheets and a shoebox of receipts. My bookkeeper actually thanked me."
+          </p>
+          <div class="testimonial-footer">
+            <!-- SWAP: avatar 2 — replace with real headshot, ~112x112 -->
+            <img
+              class="testimonial-avatar"
+              src="https://placehold.co/112x112/FBF5E8/C99A3E?text=MP"
+              alt="Portrait of Maya Patel, bakery owner"
+              width="48"
+              height="48"
+              loading="lazy"
+            >
+            <div class="testimonial-info">
+              <p class="testimonial-name">Maya Patel</p>
+              <p class="testimonial-role">Owner, Sunrise Bakery</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       FAQ
+       Common questions, accordion-style.
+       ════════════════════════════════════════════════════════ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-header reveal">
+        <span class="section-label">FAQ</span>
+        <h2>Questions? We've got answers.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Is there really a free plan?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — the free plan is free forever, no credit card required. It covers up to 50 expenses a month across 3 categories, which is plenty for personal use, students, or anyone just testing the waters before upgrading.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Can I export my data for my accountant?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — CSV and PDF exports are included on Pro and above, formatted to import cleanly into QuickBooks or Xero. It's an easy way to hand your numbers to an accountant or get ready for tax season.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            How does receipt scanning work?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Snap a photo or upload an image and Ledgr extracts the amount, vendor, and date automatically. You'll always get a quick chance to review and correct the details before it's saved — this feature is currently in preview.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Is my financial data secure?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes. Your data is encrypted both in transit and at rest, passwords are hashed and never stored in plain text, and we never sell your financial data to third parties.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Can I cancel anytime?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — there are no contracts. Cancel anytime from your account settings, and you'll keep access to your data on the free tier.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       FINAL CTA
+       Last push to get the user to sign up.
+       ════════════════════════════════════════════════════════ -->
+  <section class="final-cta reveal">
+    <div class="container">
+      <h2>Ready to know exactly where your money goes?</h2>
+      <p>Join thousands of people who stopped guessing and started tracking. It takes two minutes to set up.</p>
+      <a href="signup.html" class="btn btn-accent">Start Tracking for Free</a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       FOOTER
+       Brand info, nav columns, social links, copyright.
+       ════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <div class="logo">Ledg<span>r</span></div>
+          <p>The simplest way to track expenses and always know where your money went.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Twitter">
+              <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5 0-.28-.03-.56-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Product column -->
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <!-- Company column -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal column -->
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ledgr. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts (no build step needed — just plain JS) -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

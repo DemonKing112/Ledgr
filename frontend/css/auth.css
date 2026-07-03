@@ -1,0 +1,111 @@
+/* ──────────────────────────────────────────────────────────────
+   AUTH PAGES — LOGIN & SIGNUP STYLES
+   Centered card layout with the brand feel.
+   ────────────────────────────────────────────────────────────── */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(170deg, var(--primary-50) 0%, var(--bg) 50%, var(--accent-50) 100%);
+  padding: 24px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-card .logo {
+  text-align: center;
+  font-size: 1.75rem;
+  margin-bottom: 8px;
+}
+
+.auth-card h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.auth-card .auth-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: 32px;
+}
+
+/* ── Form fields ─────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Error message ───────────────────────────────────────────── */
+.auth-error {
+  color: var(--error);
+  font-size: 0.875rem;
+  text-align: center;
+  min-height: 20px;
+  margin-bottom: 8px;
+}
+
+/* ── Submit button ───────────────────────────────────────────── */
+.auth-card .btn-primary {
+  width: 100%;
+  padding: 12px;
+  margin-top: 4px;
+}
+
+/* ── Footer link ─────────────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.auth-footer a {
+  color: var(--primary);
+  font-weight: 500;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 32px 24px;
+  }
+}
