@@ -106,23 +106,15 @@
         <div class="page-heading">
           <div>
             <h1>Receipts</h1>
-            <p class="page-subtitle">Upload a receipt photo — automatic scanning is in preview.</p>
+            <p class="page-subtitle">Scan receipts and auto-extract expense data.</p>
           </div>
         </div>
 
-        <div class="panel" style="max-width: 560px;">
-          <div class="panel-header"><h2>Upload Receipt</h2></div>
-
-          <div class="receipt-dropzone" id="receipt-dropzone">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
-            <p>Drag a receipt image here, or</p>
-            <label class="btn btn-secondary" style="margin-top: 12px; cursor: pointer;">
-              Choose File
-              <input type="file" id="receipt-input" accept="image/*" style="display:none;">
-            </label>
-          </div>
-
-          <div id="receipt-result" style="display:none;"></div>
+        <div class="panel" style="max-width: 560px; text-align: center; padding: 60px 40px;">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
+          <h2 style="margin-bottom: 8px;">Coming Soon</h2>
+          <p style="color: var(--text-secondary); max-width: 360px; margin: 0 auto 24px;">Receipt scanning with automatic data extraction is currently in development. You'll be able to snap a photo and have the amount, vendor, and date filled in automatically.</p>
+          <a href="dashboard.html" class="btn btn-primary">Back to Dashboard</a>
         </div>
 
       </main>
