@@ -1,5 +1,5 @@
 (function () {
-  var saved = localStorage.getItem('ledgr_theme');
+  var saved = localStorage.getItem('montraq_theme');
   if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.setAttribute('data-theme', 'dark');
   }
@@ -24,10 +24,10 @@
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       if (isDark) {
         document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('ledgr_theme', 'light');
+        localStorage.setItem('montraq_theme', 'light');
       } else {
         document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('ledgr_theme', 'dark');
+        localStorage.setItem('montraq_theme', 'dark');
       }
       updateIcon();
     });

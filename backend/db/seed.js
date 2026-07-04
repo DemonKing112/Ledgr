@@ -22,7 +22,7 @@ async function seed() {
     { email: 'alex@example.com',   name: 'Alex Rivera' },
     { email: 'priya@example.com',  name: 'Priya Sharma' },
     { email: 'jordan@example.com', name: 'Jordan Chen' },
-    { email: 'demo@ledgr.app',     name: 'Demo User' },
+    { email: 'demo@montraq.app',     name: 'Demo User' },
   ];
 
   const userIds = [];
@@ -144,7 +144,7 @@ async function seed() {
 
   console.log(`  Created ${expenseCount} expenses`);
   console.log('\nDone! You can log in with:');
-  console.log('  Email:    demo@ledgr.app');
+  console.log('  Email:    demo@montraq.app');
   console.log('  Password: password123');
 
   await db.end();

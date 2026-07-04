@@ -5,7 +5,7 @@
    request and refreshes it when it expires.
    ────────────────────────────────────────────────────────────── */
 
-const API_BASE = 'https://ledgr-api-hdhe.onrender.com/api';
+const API_BASE = 'https://montraq-api-hdhe.onrender.com/api';
 
 /* ── Token management ────────────────────────────────────────
    Tokens are stored in localStorage so they survive page
@@ -13,30 +13,30 @@ const API_BASE = 'https://ledgr-api-hdhe.onrender.com/api';
    refresh token in an httpOnly cookie instead.)                */
 
 function getAccessToken() {
-  return localStorage.getItem('ledgr_access_token');
+  return localStorage.getItem('montraq_access_token');
 }
 
 function getRefreshToken() {
-  return localStorage.getItem('ledgr_refresh_token');
+  return localStorage.getItem('montraq_refresh_token');
 }
 
 function saveTokens(accessToken, refreshToken) {
-  localStorage.setItem('ledgr_access_token', accessToken);
-  localStorage.setItem('ledgr_refresh_token', refreshToken);
+  localStorage.setItem('montraq_access_token', accessToken);
+  localStorage.setItem('montraq_refresh_token', refreshToken);
 }
 
 function clearTokens() {
-  localStorage.removeItem('ledgr_access_token');
-  localStorage.removeItem('ledgr_refresh_token');
-  localStorage.removeItem('ledgr_user');
+  localStorage.removeItem('montraq_access_token');
+  localStorage.removeItem('montraq_refresh_token');
+  localStorage.removeItem('montraq_user');
 }
 
 function saveUser(user) {
-  localStorage.setItem('ledgr_user', JSON.stringify(user));
+  localStorage.setItem('montraq_user', JSON.stringify(user));
 }
 
 function getUser() {
-  const raw = localStorage.getItem('ledgr_user');
+  const raw = localStorage.getItem('montraq_user');
   return raw ? JSON.parse(raw) : null;
 }
 

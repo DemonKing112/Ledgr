@@ -1,4 +1,4 @@
-# Ledgr — Smart Expense Tracking for Freelancers
+# Montraq — Smart Expense Tracking for Freelancers
 
 A full-stack SaaS web app that helps freelancers track expenses, manage project budgets, and stay tax-ready.
 
@@ -20,7 +20,7 @@ A full-stack SaaS web app that helps freelancers track expenses, manage project 
 
 ```bash
 git clone <your-repo-url>
-cd Ledgr
+cd Montraq
 ```
 
 ### 2. Set up the backend
@@ -34,7 +34,7 @@ npm run dev                  # Start the API server on port 3001
 ```
 
 The seed script creates a demo account you can use right away:
-- **Email:** `demo@ledgr.app`
+- **Email:** `demo@montraq.app`
 - **Password:** `password123`
 
 ### 3. Serve the frontend
@@ -67,7 +67,7 @@ npm test
 ## Project Structure
 
 ```
-Ledgr/
+Montraq/
 ├── frontend/
 │   ├── index.html          Marketing / landing page
 │   ├── login.html          Log-in page

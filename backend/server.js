@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────────────────────
-   LEDGR API SERVER
+   MONTRAQ API SERVER
    The main entry point.  Loads environment variables, sets up
    security middleware, mounts all route files, and starts
    listening for requests.
@@ -79,7 +79,7 @@ const dbReady = db.initDb();
 if (require.main === module) {
   dbReady.then(() => {
     app.listen(PORT, () => {
-      console.log(`Ledgr API running on http://localhost:${PORT}`);
+      console.log(`Montraq API running on http://localhost:${PORT}`);
     });
   }).catch(err => {
     console.error('Failed to start server:', err);

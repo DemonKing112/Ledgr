@@ -1,4 +1,4 @@
-var CACHE_NAME = 'ledgr-v1';
+var CACHE_NAME = 'montraq-v1';
 var STATIC_ASSETS = [
   '/',
   '/dashboard.html',

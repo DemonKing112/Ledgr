@@ -1,7 +1,7 @@
 {
-  "name": "ledgr-backend",
+  "name": "montraq-backend",
   "version": "1.0.0",
-  "description": "Backend API for Ledgr — expense tracking for freelancers",
+  "description": "Backend API for Montraq — expense tracking for freelancers",
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",

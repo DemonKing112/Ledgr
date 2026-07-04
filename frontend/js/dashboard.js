@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ledgr-expenses-${period}.csv`;
+    a.download = `montraq-expenses-${period}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   });

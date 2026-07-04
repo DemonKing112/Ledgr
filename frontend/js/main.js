@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Update nav login/dashboard link ───────────────────────
      If the user is already logged in, show "Dashboard" instead
      of "Log In" in the nav.                                    */
-  const token = localStorage.getItem('ledgr_access_token');
+  const token = localStorage.getItem('montraq_access_token');
   if (token) {
     document.querySelectorAll('.nav-login-link').forEach(link => {
       link.textContent = 'Dashboard';

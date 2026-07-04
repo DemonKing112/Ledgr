@@ -1,6 +1,6 @@
 {
-  "name": "Ledgr — Expense Tracker",
-  "short_name": "Ledgr",
+  "name": "Montraq — Expense Tracker",
+  "short_name": "Montraq",
   "description": "Track expenses, set budgets, and manage your finances.",
   "start_url": "/dashboard.html",
   "display": "standalone",
