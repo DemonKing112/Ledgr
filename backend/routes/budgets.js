@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/schema');
 const authenticate = require('../middleware/auth');
 const { budgetRules, idParam } = require('../middleware/validate');
+const { budgetLimit } = require('../middleware/planLimits');
 
 router.use(authenticate);
 
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', budgetRules, async (req, res) => {
+router.post('/', budgetLimit, budgetRules, async (req, res) => {
   try {
     const { category_id, monthly_limit } = req.body;
 

@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/schema');
 const authenticate = require('../middleware/auth');
 const { projectRules, idParam } = require('../middleware/validate');
+const { projectLimit } = require('../middleware/planLimits');
 
 router.use(authenticate);
 
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', projectRules, async (req, res) => {
+router.post('/', projectLimit, projectRules, async (req, res) => {
   try {
     const { name, client_name } = req.body;
     const { rows } = await db.query(

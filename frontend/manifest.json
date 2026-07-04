@@ -1,0 +1,21 @@
+{
+  "name": "Ledgr — Expense Tracker",
+  "short_name": "Ledgr",
+  "description": "Track expenses, set budgets, and manage your finances.",
+  "start_url": "/dashboard.html",
+  "display": "standalone",
+  "background_color": "#FAF6EF",
+  "theme_color": "#3F5D42",
+  "icons": [
+    {
+      "src": "images/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

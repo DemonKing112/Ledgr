@@ -212,6 +212,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 3000);
   }
 
+  document.getElementById('export-csv-btn')?.addEventListener('click', () => {
+    const current = expensesForPeriod();
+    if (current.length === 0) { showToast('No expenses to export', 'error'); return; }
+    const header = 'Date,Description,Category,Project,Amount';
+    const rows = current.map(e =>
+      [e.date, `"${(e.description || '').replace(/"/g, '""')}"`, e.category_name || '', e.project_name || '', Number(e.amount).toFixed(2)].join(',')
+    );
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ledgr-expenses-${period}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('CSV exported');
+  });
+
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;

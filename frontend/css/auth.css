@@ -109,3 +109,17 @@
     padding: 32px 24px;
   }
 }
+
+/* ── Dark Mode ──────────────────────────────────────────────── */
+[data-theme="dark"] .auth-page {
+  background: linear-gradient(170deg, #1A1A1A 0%, #1A1A1A 50%, #1E1E1E 100%);
+}
+[data-theme="dark"] .auth-card {
+  background: #242424;
+  border-color: #3A3630;
+}
+[data-theme="dark"] .form-group input {
+  background: #2E2B26;
+  border-color: #3A3630;
+  color: #E8E4DC;
+}

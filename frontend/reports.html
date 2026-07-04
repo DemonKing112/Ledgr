@@ -6,6 +6,7 @@
   <title>Reports — Ledgr</title>
   <meta name="description" content="Detailed spending reports and trends on Ledgr.">
   <link rel="icon" href="images/favicon.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,6 +82,7 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
         </button>
         <div class="topbar-right">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode"><svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
           <span class="topbar-greeting">Hello, <strong id="user-name">User</strong></span>
           <div class="topbar-avatar-wrap dropdown-wrap">
             <button class="topbar-avatar" id="avatar-btn"><span id="avatar-initial">U</span></button>
@@ -107,6 +109,10 @@
             <p class="page-subtitle">The full picture — category breakdown, trends, and biggest expenses.</p>
           </div>
           <div class="page-actions">
+            <button class="btn-outline" id="export-csv-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
             <div class="dropdown-wrap">
               <button class="btn-outline" id="report-period-btn">
                 <span id="report-period-label">All Time</span>
@@ -166,6 +172,7 @@
 
   <div id="toast-container"></div>
 
+  <script src="js/theme.js"></script>
   <script src="js/api.js"></script>
   <script src="js/reports.js"></script>
 

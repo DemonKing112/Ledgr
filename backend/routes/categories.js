@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db/schema');
 const authenticate = require('../middleware/auth');
 const { categoryRules, idParam } = require('../middleware/validate');
+const { categoryLimit } = require('../middleware/planLimits');
 
 router.use(authenticate);
 
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', categoryRules, async (req, res) => {
+router.post('/', categoryLimit, categoryRules, async (req, res) => {
   try {
     const { name, color, icon } = req.body;
     const { rows } = await db.query(
